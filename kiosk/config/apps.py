@@ -10,7 +10,8 @@ DJANGO_DEFAULT_APPS = [
 ]
 
 CUSTOM_APPS = [
-    'gist'
+    'gist',
+    'accounts',
 ]
 
 SITE_ID = 1
