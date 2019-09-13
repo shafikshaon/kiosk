@@ -17,7 +17,7 @@ class Command(BaseCommand):
         _init_file_write.close()
 
     def handle(self, *args, **options):
-        installed_custom_app = [app for app in settings.INSTALLED_APPS if "django" not in app]
+        installed_custom_app = [app for app in settings.CUSTOM_APPS]
 
         _migration = '/migrations'
         for app in installed_custom_app:
@@ -25,9 +25,7 @@ class Command(BaseCommand):
             if not os.path.exists(app + _migration):
                 os.makedirs(app_path + _migration)
                 self.init_file_generate(app_path=app_path, migration=_migration)
-                self.stdout.write(self.style.SUCCESS('"{0}" app migrations initialized.\n'.format(app)))
             if not os.path.exists(app + _migration + '/__init__.py'):
                 self.init_file_generate(app_path=app_path, migration=_migration)
-                self.stdout.write(self.style.SUCCESS('"{0}" app init created.\n'.format(app)))
 
-        self.stdout.write(self.style.SUCCESS('Command executed successfully.'))
+        self.stdout.write(self.style.SUCCESS('Migrations initialized.'))
