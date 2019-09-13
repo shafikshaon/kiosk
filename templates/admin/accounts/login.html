@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Kiosk | Login</title>
+
+    <link href="{% static 'admin/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'admin/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+
+    <link href="{% static 'admin/css/animate.css' %}" rel="stylesheet">
+    <link href="{% static 'admin/css/style.css' %}" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+
+<div class="middle-box loginscreen animated fadeInDown">
+    <div>
+        <h1 class="logo-name text-center">Kiosk</h1>
+    </div>
+    <h3 class="text-center">Welcome to Kiosk</h3>
+    <p class="text-center">Login in. To see it in action.</p>
+
+    <form class="m-t" method="post">
+        {% csrf_token %}
+        {% for field in form.visible_fields %}
+            <div class="form-group {% if field.errors %}has-error{% endif %}">
+                {{ field.label_tag }}
+                {{ field }}
+
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <span class="form-text m-b-none">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+
+                {% if field.help_text %}
+                    <span class="help-block">{{ field.help_text }}</span>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger alert-dismissable text-left">
+                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        {% for hidden_field in form.hidden_fields %}
+            {% if hidden_field.errors %}
+                <ul>
+                    {% for error in hidden_field.errors %}
+                        <li>{{ hidden_field.name }} field is required.</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {{ hidden_field }}
+        {% endfor %}
+        <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
+
+        <a href="#" class="text-center">Forgot password?</a>
+    </form>
+    <p class="m-t text-center">&copy; 2019. Kiosk</p>
+</div>
+
+<!-- Mainly scripts -->
+<script src="{% static 'admin/js/jquery-3.1.1.min.js' %}"></script>
+<script src="{% static 'admin/js/popper.min.js' %}"></script>
+<script src="{% static 'admin/js/bootstrap.js' %}"></script>
+
+</body>
+
+</html>
