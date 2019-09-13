@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 from django.urls import path, include
 
 urlpatterns = [
+    path('admin/', include('accounts.urls'))
 ]
 
 if config('IS_DEVELOPMENT'):
