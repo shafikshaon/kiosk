@@ -4,4 +4,4 @@ __author__ = 'Shafikur Rahman'
 
 
 class DashboardView(TemplateView):
-    pass
+    template_name = 'admin/gist/dashboard.html'
