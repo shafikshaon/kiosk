@@ -23,6 +23,10 @@ WSGI_APPLICATION = 'kiosk.wsgi.application'
 
 LOGIN_REDIRECT_URL = '/'
 
+ADMIN_LOGIN_REDIRECT_URL = '/admin/'
+
+AUTH_USER_MODEL = 'accounts.SystemUser'
+
 APPEND_SLASH = True
 
 # built-in Message framework
@@ -33,3 +37,8 @@ MESSAGE_TAGS = {
     messages.WARNING: 'warning',
     messages.ERROR: 'danger',
 }
+
+AUTHENTICATION_BACKENDS = (
+    'accounts.authentication.EmailOrUsernameModelBackend',
+    'django.contrib.auth.backends.ModelBackend'
+)
