@@ -55,7 +55,7 @@ class Activity(Base):
     unpublished_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET(get_sentinel_user),
-        related_name='%(app_label)s_%(class)s_publish_by',
+        related_name='%(app_label)s_%(class)s_unpublished_by',
         null=True
     )
 
