@@ -42,3 +42,5 @@ AUTHENTICATION_BACKENDS = (
     'accounts.authentication.EmailOrUsernameModelBackend',
     'django.contrib.auth.backends.ModelBackend'
 )
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
