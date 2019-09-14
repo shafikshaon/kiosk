@@ -12,7 +12,6 @@
     <link href="{% static 'admin/font-awesome/css/font-awesome.css' %}" rel="stylesheet">
     <link href="{% static 'admin/css/animate.css' %}" rel="stylesheet">
     <link href="{% static 'admin/css/style.css' %}" rel="stylesheet">
-
 </head>
 
 <body>
@@ -128,7 +127,7 @@
             <div class="float-right">
                 <script type="text/javascript">
                     let req = new XMLHttpRequest();
-                    req.open('HEAD', document.location, false);
+                    req.open('GET', document.location, false);
                     req.send(null);
                     let headers = req.getAllResponseHeaders();
 
@@ -170,10 +169,10 @@
         let python_time = headers['x-python-time'];
         let db_queries = headers['x-db-queries'];
         let db_time = headers['x-db-time'];
-        let response_text = "<strong>Total response: </strong> " + total_time + ' ms';
-        response_text += " - <strong>Python time: </strong> " + python_time + ' ms';
-        response_text += " - <strong>Total queries: </strong> " + db_queries;
-        response_text += " - <strong>Query time: </strong>" + db_time + ' ms';
+        let response_text = "Response: <strong>" + total_time + ' ms</strong>';
+        response_text += " - Python: <strong>" + python_time + ' ms</strong>';
+        response_text += " - Queries: <strong>" + db_queries + '</strong>';
+        response_text += " - Query: <strong>" + db_time + ' ms</strong>';
         $('#request_time_consume').html(response_text);
     });
 </script>

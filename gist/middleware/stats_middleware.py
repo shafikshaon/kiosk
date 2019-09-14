@@ -1,5 +1,6 @@
 from functools import reduce
 from operator import add
+from socket import error as SocketError
 
 from django.db import connection
 from django.utils.deprecation import MiddlewareMixin
@@ -15,26 +16,24 @@ class StatsMiddleware(MiddlewareMixin):
         request.start_time = time.time()
 
     def process_response(self, request, response):
-        duration = time.time() - request.start_time
-        n = len(connection.queries)
-        db_queries = len(connection.queries) - n
-        if db_queries:
-            db_time = reduce(add, [float(q['time'])
-                                   for q in connection.queries[n:]])
-        else:
-            db_time = 0.0
+        try:
+            duration = time.time() - request.start_time
+            db_queries = len(connection.queries)
+            if db_queries:
+                db_time = reduce(add, [float(q['time']) for q in connection.queries[:]])
+            else:
+                db_time = 0.0
 
-        # and back out python time
-        python_time = request.start_time - db_time
+            db_time = float(db_time * 1000)
+            total_time = float(duration * 1000)
+            python_time = float(total_time - db_time)
 
-        # Add the header.
-        python_time = int(python_time * 1000)
-        db_time = int(db_time * 1000)
-        db_queries = db_queries
+            db_queries = db_queries
 
-        response["X-Total-Time"] = int(duration * 1000)
-        response["X-Python-Time"] = int(duration * 1000) - db_time
-        response["X-DB-Time"] = db_time
-        response["X-DB-Queries"] = db_queries
-
+            response["X-Total-Time"] = round(total_time, 2)
+            response["X-Python-Time"] = round(python_time, 2)
+            response["X-DB-Time"] = round(db_time, 2)
+            response["X-DB-Queries"] = db_queries
+        except SocketError as e:
+            pass
         return response
