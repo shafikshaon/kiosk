@@ -34,7 +34,8 @@
 
         {% include 'admin/_shared/_topnavbar.html' %}
 
-        {% include 'admin/_shared/_breadcrumb.html' %}
+        {% block breadcrumb %}
+        {% endblock %}
 
         <div class="wrapper wrapper-content">
             <div class="row">

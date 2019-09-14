@@ -3464,13 +3464,16 @@ select.form-control:not([size]):not([multiple]) {
     border-color: #1ab394;
 }
 
-.emphasized:focus {
+.form-control:focus {
     background-color: #FFF;
     border-color: transparent;
     -webkit-box-shadow: 0 0 0 2px #17a2b8;
     box-shadow: 0 0 0 2px #17a2b8;
 }
 
+.col-form-label {
+    font-weight: bold;
+}
 
 .has-success .form-control,
 .has-success .form-control:focus {
@@ -3484,7 +3487,10 @@ select.form-control:not([size]):not([multiple]) {
 
 .has-error .form-control,
 .has-error .form-control:focus {
-    border-color: #ed5565;
+    background-color: #FFF;
+    border-color: transparent;
+    -webkit-box-shadow: 0 0 0 2px #dc3545;
+    box-shadow: 0 0 0 2px #dc3545
 }
 
 .has-success .control-label {
