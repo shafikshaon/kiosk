@@ -7,6 +7,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', include('accounts.urls')),
     path('admin/', include('gist.urls')),
+    path('admin/', include('authorization.urls')),
 ]
 
 if config('IS_DEVELOPMENT'):
