@@ -3430,7 +3430,7 @@ div.dt-button-info {
 }
 
 select.form-control:not([size]):not([multiple]) {
-    height: 2.05rem;
+    height: 2.30rem;
 }
 
 .input-sm,
@@ -11723,4 +11723,48 @@ body.md-skin {
     #page-wrapper {
         margin: 0;
     }
+}
+
+
+.sort-by {
+    margin-left: 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+.sort-by li {
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.sort-by-area {
+    margin-left: 0;
+    padding-left: 0;
+    float: right;
+}
+
+.search-area {
+    margin-left: 0;
+    padding-left: 0;
+    float: left;
+}
+
+.sort-by-area li,
+.search-area li {
+    display: inline-block;
+}
+
+.action-btn-list {
+    margin-left: 0;
+    padding-left: 0;
+    float: right;
+    list-style: none;
+}
+
+.action-btn-list li {
+    display: inline-block;
+}
+
+.font-700 {
+    font-weight: 700;
 }
