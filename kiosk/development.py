@@ -8,6 +8,7 @@ ALLOWED_HOSTS = ['*']
 THIRD_PARTY_APPS = [
     'debug_toolbar',
     'rest_framework',
+    'django_cool_paginator',
 ]
 
 INSTALLED_APPS += THIRD_PARTY_APPS
