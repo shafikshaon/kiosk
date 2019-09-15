@@ -5,6 +5,8 @@ from django.urls import reverse
 from django.views.generic import CreateView
 
 from authorization.forms.role import RoleForm
+from authorization.models import Role
+from gist.mixins.ListViewMixin import ListViewMixin
 
 __author__ = 'Shafikur Rahman'
 
@@ -33,3 +35,24 @@ class RoleAddView(LoginRequiredMixin, CreateView):
 
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(form=form))
+
+
+class RoleListView(ListViewMixin):
+    template_name = 'admin/authorization/role/list.html'
+    model = Role
+    paginate_by = 10
+    context_object_name = 'objects_list'
+
+    def get_context_data(self, **kwargs):
+        context = super(RoleListView, self).get_context_data(**kwargs)
+        context['title'] = 'Role - List'
+        context['page_headline'] = 'Role(s)'
+        context['total_count'] = self.get_queryset().count()
+        return context
+
+    def get_queryset(self):
+        object_list = super(RoleListView, self).get_queryset()
+        search = self.request.GET.get('search1', None)
+        if search:
+            object_list = object_list.filter(name__icontains=search)
+        return object_list.filter(is_delete=False).values('pk', 'name', 'add_by', 'is_delete', 'add_at')
