@@ -8,4 +8,5 @@ class ListViewMixin(ListView):
         context = super(ListViewMixin, self).get_context_data(object_list=None, **kwargs)
         context['order_by_columns'] = self.model.get_order_by_columns
         context['searchable_columns'] = self.model.get_searchable_columns
+        context['search_keyword'] = self.request.GET.get('search', None)
         return context
