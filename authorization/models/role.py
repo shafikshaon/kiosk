@@ -1,10 +1,10 @@
 __author__ = 'Shafikur Rahman'
 from django.contrib.auth.models import Group
 
-from gist.models import Activity, TimeLog
+from gist.models import Activity, TimeLog, Key
 
 
-class Role(Group, TimeLog, Activity):
+class Role(Group, TimeLog, Key, Activity):
     class Meta:
         db_table = 'kiosk_roles'
 
@@ -16,8 +16,8 @@ class Role(Group, TimeLog, Activity):
 
     @classmethod
     def get_order_by_columns(cls):
-        return ['name']
+        return ['name:Role name', 'is_active:Status', 'add_by:Created by', 'add_at:Created at']
 
     @classmethod
     def get_searchable_columns(cls):
-        return ['name']
+        return ['name:Role name', 'is_active:Status', 'add_by:Created by', 'add_at:Created at:date']
