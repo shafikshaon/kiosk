@@ -1,9 +1,11 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
-from django.urls import reverse
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.urls import reverse, reverse_lazy
+from django.utils import timezone
+from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 
 from authorization.forms.role import RoleForm
 from authorization.models import Role
@@ -32,7 +34,7 @@ class RoleAddView(LoginRequiredMixin, CreateView):
         role.save()
         form.save_m2m()
         messages.success(self.request, 'Role added successfully.')
-        return HttpResponseRedirect(reverse('role-add'))
+        return HttpResponseRedirect(reverse('role-list'))
 
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(form=form))
@@ -56,7 +58,9 @@ class RoleListView(LoginRequiredMixin, ListViewMixin):
         search = self.request.GET.get('search1', None)
         if search:
             object_list = object_list.filter(name__icontains=search)
-        return object_list.filter(is_delete=False).values('pk', 'name', 'add_by__username', 'is_delete', 'add_at')
+        return object_list.filter(is_delete=False).values(
+            'pk', 'name', 'add_by__username', 'is_delete', 'add_at'
+        ).order_by('-pk')
 
 
 class RoleDetailView(LoginRequiredMixin, DetailView):
@@ -95,3 +99,29 @@ class RoleChangeView(LoginRequiredMixin, UpdateView):
         form.save_m2m()
         messages.success(self.request, 'Role updated successfully.')
         return HttpResponseRedirect(reverse('role-list'))
+
+
+class RoleDelete(LoginRequiredMixin, DeleteView):
+    template_name = 'admin/authorization/role/role_confirm_delete.html'
+    model = Role
+    success_url = reverse_lazy('role-list')
+
+    def get_context_data(self, **kwargs):
+        context = super(RoleDelete, self).get_context_data(**kwargs)
+        context['title'] = 'Role | Delete'
+        context['page_headline'] = context['object'].name
+        return context
+
+    def post(self, request, *args, **kwargs):
+        if "cancel" in request.POST:
+            return HttpResponseRedirect(reverse('role-list'))
+        else:
+            role = self.get_object()
+            role.delete_by = self.request.user
+            role.delete_at = timezone.now()
+            role.is_delete = True
+            # Todo: This will removed. Problem is role exists in parent Group model
+            Group.objects.all().delete()
+            role.save()
+            messages.error(self.request, 'Role deleted successfully.')
+            return HttpResponseRedirect(reverse('role-list'))

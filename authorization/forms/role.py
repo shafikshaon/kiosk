@@ -15,7 +15,7 @@ class RoleForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={'class': 'form-control', 'autofocus': 'autofocus', 'placeholder': 'Role name', 'autocomplete': 'off'}
         ),
-        error_messages={'required': 'Please enter role name'},
+        error_messages={'required': 'Please enter role name', 'unique': 'Role name already exists.'},
         required=True
     )
     if len(skipped_content_type_ids) == 0:
