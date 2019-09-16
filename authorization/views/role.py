@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView, UpdateView
 
 from authorization.forms.role import RoleForm
 from authorization.models import Role
@@ -74,3 +74,24 @@ class RoleDetailView(LoginRequiredMixin, DetailView):
     def get_queryset(self):
         queryset = super(RoleDetailView, self).get_queryset()
         return queryset.select_related('add_by', 'change_by')
+
+
+class RoleChangeView(LoginRequiredMixin, UpdateView):
+    template_name = 'admin/authorization/role/change.html'
+    model = Role
+    form_class = RoleForm
+    login_url = settings.ADMIN_LOGIN_REDIRECT_URL
+
+    def get_context_data(self, **kwargs):
+        context = super(RoleChangeView, self).get_context_data(**kwargs)
+        context['title'] = 'Role - Update'
+        context['page_headline'] = context['object'].name
+        return context
+
+    def form_valid(self, form):
+        role = form.save(commit=False)
+        role.change_by = self.request.user
+        role.save()
+        form.save_m2m()
+        messages.success(self.request, 'Role updated successfully.')
+        return HttpResponseRedirect(reverse('role-list'))
