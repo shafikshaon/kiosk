@@ -11768,3 +11768,7 @@ body.md-skin {
 .font-700 {
     font-weight: 700;
 }
+
+.table-borderless tbody > tr > td {
+    border: 0;
+}

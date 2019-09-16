@@ -59,21 +59,19 @@
                                     {{ forloop.counter }}
                                 </td>
                                 <td>
-                                    <a href="">{{ object.name }}</a>
+                                    <a href="{% url 'role-view' object.pk %}">{{ object.name }}</a>
                                 </td>
                                 <td>
-                                    {% if object.is_active %}
-                                        <span class="success">
-                                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
-                                                </span>
+                                    {% if object.is_delete %}
+                                        <span class="danger"><i class="fa fa-minus-circle"
+                                                                aria-hidden="true"></i></span>
                                     {% else %}
-                                        <span class="danger">
-                                                    <i class="fa fa-minus-circle" aria-hidden="true"></i>
-                                                </span>
+                                        <span class="success"><i class="fa fa-check-circle"
+                                                                 aria-hidden="true"></i></span>
                                     {% endif %}
                                 </td>
                                 <td>
-                                    {{ object.add_by }}
+                                    {{ object.add_by__username }}
                                 </td>
                                 <td>
                                     {{ object.add_at }}
